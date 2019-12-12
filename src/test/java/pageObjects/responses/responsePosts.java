@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import framework.utils.APIUtils;
 import pageObjects.models.Post;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class responsePosts {
     private static final String POSTS = "posts/";
 
-    public static ArrayList<Post> getUsers(String url) {
+    public static ArrayList<Post> getPosts(String url) {
         url += POSTS;
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<Post> posts = new ArrayList<Post>();
@@ -21,6 +22,17 @@ public class responsePosts {
             }
         }
         return posts;
+    }
+
+    public static Post getPost(String url, int id) {
+        url += POSTS;
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(APIUtils.getJsonArray(url).getJSONObject(id).toString(), Post.class);
+        }catch(Exception e) {
+            e.getMessage();
+        }
+        return null;
     }
 
     public static boolean isSorted(ArrayList<Post> posts) {
