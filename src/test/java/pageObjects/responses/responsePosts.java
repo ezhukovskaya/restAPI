@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import framework.utils.APIUtils;
 import org.apache.log4j.Logger;
 import pageObjects.models.Post;
-import tests.TC1;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class responsePosts {
@@ -18,9 +16,9 @@ public class responsePosts {
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<Post> posts = new ArrayList<Post>();
         log.info("Adding JSON objects into the array");
-        for (int i = 0; i < APIUtils.getJsonNodeSize(url); i++) {
+        for (int i = 0; i < APIUtils.getResponse(url).getBody().getArray().length(); i++) {
             try {
-                posts.add(objectMapper.readValue(APIUtils.getJsonArray(url).getJSONObject(i).toString(), Post.class));
+                posts.add(objectMapper.readValue(APIUtils.getResponse(url).getBody().getArray().getJSONObject(i).toString(), Post.class));
             } catch (Exception e) {
                 e.getMessage();
             }
@@ -33,7 +31,7 @@ public class responsePosts {
         ObjectMapper objectMapper = new ObjectMapper();
         log.info("Taking " + id + " JSON object");
         try {
-            return objectMapper.readValue(APIUtils.getJsonArray(url).getJSONObject(id).toString(), Post.class);
+            return objectMapper.readValue(APIUtils.getResponse(url).getBody().getArray().getJSONObject(id).toString(), Post.class);
         }catch(Exception e) {
             e.getMessage();
         }
